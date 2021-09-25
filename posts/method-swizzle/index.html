@@ -8,7 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="author" content="Feng" />
   <meta property="og:url" content="http://example.org/posts/method-swizzle/" />
-  <link rel="canonical" href="http://example.org/posts/method-swizzle/" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Feng&#39;s Annex">
+  <link rel="canonical" href="http://example.org/posts/method-swizzle/" /><link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/joway/blog" /><link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="icon" href="/logo.png" />
+  <link rel="shortcut" href="/logo.png" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Feng&#39;s Annex">
 
   <script type="application/ld+json">
   {
@@ -81,7 +83,7 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
 
   
 
-  <link href="/index.xml" rel="alternate" type="application/rss+xml"
+  <link href="https://cdn.jsdelivr.net/gh/joway/blog/index.xml" rel="alternate" type="application/rss+xml"
     title="Feng&#39;s Annex">
   
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -90,7 +92,7 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
   
 
   
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxx"></script>
+  
 </head>
 
 
@@ -106,25 +108,21 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
       >Feng&#39;s Annex</a
     >
   </div>
-  <div class="header-subtitle"></div>
+  <div class="header-subtitle">Log something useless, but interesting.</div>
 </header>
 <div class="row end-md center-xs header-items">
   
   <div class="header-item">
-    <a href="https://joway.io" target="_blank">About Me</a>
+    <a href="https://mailchi.mp/a1a0d59e7a19/joway" target="_blank">Subscribe</a>
   </div>
   
   <div class="header-item">
-    <a href="https://github.com/joway" target="_blank">Github</a>
+    <a href="/about" target="_blank">About</a>
   </div>
   
 </div>
 <div class="row end-xs">
-  
-  <div class="lang-switch col-xs-3 col-xs-offset-9">
-    <a href="/en/">English</a>
-  </div>
-    
+   
 </div>
 <div class="header-line"></div>
 
@@ -159,8 +157,8 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
 <p>Swizzle的本质是：在运行时交换方法的实现（IMP）。灵活的使用swizzle，可以达到hook的效果，开发者可以hook住系统的方法或者生命周期，来做一些自定义的操作。</p>
 <h2 id="原理">原理</h2>
 <p>Objective-C的消息机制：在 Objective-C 中调用一个方法， 实际上是在底层通过 <code>objc_msgSend()</code>发送一个消息。 而查找消息的唯一依据是selector的方法名。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-objectivec" data-lang="objectivec">[obj doSomething]; <span style="font-style:italic">/// =&gt; objc_msgSend(obj,@selector(doSomething))
-</span><span style="font-style:italic"></span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-objectivec" data-lang="objectivec"><span style="color:#000;font-weight:bold">[</span><span style="color:#000">obj</span> <span style="color:#000">doSomething</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#8f5902;font-style:italic">/// =&gt; objc_msgSend(obj,@selector(doSomething))
+</span><span style="color:#8f5902;font-style:italic"></span>
 </code></pre></div><p>每一个OC实例对象都保存有isa指针和实例变量，其中isa指针所属类，类维护一个运行时可接收的方法列表(MethodLists)； 方法列表(MethodLists)中保存selector &amp; IMP的映射关系。在运行时，通过selecter找到匹配的IMP，从而找到的具体的实现函数。</p>
 <p>开发中可以利用Objective-C的动态特性，在运行时替换selector对应的方法实现（IMP），达到给hook的目的。下图是利用 Method Swizzle 来替换selector对应IMP后的方法列表示意图。</p>
 <p><a href="Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2asx-watermark.awebp">Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2asx-watermark.awebp</a></p>
@@ -180,10 +178,10 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
 <li>
 <p>要记得调用原来的方法</p>
 <p>下面代码在正常情况下会出现循环：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-objectivec" data-lang="objectivec">- (<span style="">void</span>)xxx_viewWillAppear:(<span style="">BOOL</span>)animated {
-    [self xxx_viewWillAppear:animated];
-    NSLog(<span style="font-style:italic">@&#34;viewWillAppear: %@&#34;</span>, NSStringFromClass([self <span style="font-weight:bold">class</span>]));
-}
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-objectivec" data-lang="objectivec"><span style="color:#000;font-weight:bold">-</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">void</span><span style="color:#000;font-weight:bold">)</span><span style="color:#000">xxx_viewWillAppear:</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">BOOL</span><span style="color:#000;font-weight:bold">)</span><span style="color:#000">animated</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000;font-weight:bold">[</span><span style="color:#204a87">self</span> <span style="color:#f57900">xxx_viewWillAppear</span><span style="color:#000;font-weight:bold">:</span><span style="color:#000">animated</span><span style="color:#000;font-weight:bold">];</span>
+    <span style="color:#000">NSLog</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">@&#34;viewWillAppear: %@&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">NSStringFromClass</span><span style="color:#000;font-weight:bold">([</span><span style="color:#204a87">self</span> <span style="color:#204a87;font-weight:bold">class</span><span style="color:#000;font-weight:bold">]));</span>
+<span style="color:#000;font-weight:bold">}</span>
 
 </code></pre></div><p>然而在交换了方法实现后就不会出现循环了。好的程序员应该对这里出现的方法的递归调用有所警觉，这里我们应该理清在 method swizzling 后方法的实现究竟变成了什么。在交换了方法的实现后，xxx_viewWillAppear:方法的实现已经被替换为了 UIViewController -viewWillAppear：的原生实现，所以这里并不是在递归调用。由于 xxx_viewWillAppear: 这个方法的实现已经被替换为了 viewWillAppear: 的实现，所以，当我们在这个方法中再调用 viewWillAppear: 时便会造成递归循环。</p>
 <h2 id="rsswizzle">RSSwizzle</h2>
@@ -191,73 +189,73 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
 <p>核心的思路是：使用<code>RSSwizzleInfo</code>存储需要swizzle的信息。其中包含一个selector和寻找IMP的闭包<code>originalImpProvider</code>。查找IMP的方法是查询当前类是否实现了方法，如果没有就查询他的父类，一直查到底。</p>
 <p>这里为了保证线程安全，使用了一个自旋锁。这里额外的多说几句，没有抢到自旋锁的进程会不断重试直到取到锁。因此自旋锁适用于消耗比较小，用时短的工作。但自旋锁并不是完全安全的，它会带来优先级反转的问题。iOS10之后可以使用<code>os_unfair_lock</code>。</p>
 <p><a href="https://blog.ibireme.com/2016/01/16/spinlock_is_unsafe_in_ios/">不再安全的 OSSpinLock</a></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-objectivec" data-lang="objectivec"><span style="font-weight:bold">static</span> <span style="">void</span> swizzle(<span style="">Class</span> classToSwizzle,
-                    <span style="">SEL</span> selector,
-                    RSSwizzleImpFactoryBlock factoryBlock)
-{
-    Method method = class_getInstanceMethod(classToSwizzle, selector);
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-objectivec" data-lang="objectivec"><span style="color:#204a87;font-weight:bold">static</span> <span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">swizzle</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">Class</span> <span style="color:#000">classToSwizzle</span><span style="color:#000;font-weight:bold">,</span>
+                    <span style="color:#204a87;font-weight:bold">SEL</span> <span style="color:#000">selector</span><span style="color:#000;font-weight:bold">,</span>
+                    <span style="color:#000">RSSwizzleImpFactoryBlock</span> <span style="color:#000">factoryBlock</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">Method</span> <span style="color:#000">method</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">class_getInstanceMethod</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">classToSwizzle</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">selector</span><span style="color:#000;font-weight:bold">);</span>
 
-    NSCAssert(NULL != method,
-              <span style="font-style:italic">@&#34;Selector %@ not found in %@ methods of class %@.&#34;</span>,
-              NSStringFromSelector(selector),
-              class_isMetaClass(classToSwizzle) ? <span style="font-style:italic">@&#34;class&#34;</span> : <span style="font-style:italic">@&#34;instance&#34;</span>,
-              classToSwizzle);
+    <span style="color:#000">NSCAssert</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87">NULL</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#000">method</span><span style="color:#000;font-weight:bold">,</span>
+              <span style="color:#4e9a06">@&#34;Selector %@ not found in %@ methods of class %@.&#34;</span><span style="color:#000;font-weight:bold">,</span>
+              <span style="color:#000">NSStringFromSelector</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">selector</span><span style="color:#000;font-weight:bold">),</span>
+              <span style="color:#000">class_isMetaClass</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">classToSwizzle</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">?</span> <span style="color:#4e9a06">@&#34;class&#34;</span> <span style="color:#ce5c00;font-weight:bold">:</span> <span style="color:#4e9a06">@&#34;instance&#34;</span><span style="color:#000;font-weight:bold">,</span>
+              <span style="color:#000">classToSwizzle</span><span style="color:#000;font-weight:bold">);</span>
 
-    NSCAssert(blockIsAnImpFactoryBlock(factoryBlock),
-             <span style="font-style:italic">@&#34;Wrong type of implementation factory block.&#34;</span>);
+    <span style="color:#000">NSCAssert</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">blockIsAnImpFactoryBlock</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">factoryBlock</span><span style="color:#000;font-weight:bold">),</span>
+             <span style="color:#4e9a06">@&#34;Wrong type of implementation factory block.&#34;</span><span style="color:#000;font-weight:bold">);</span>
 
-    <span style="font-weight:bold">__block</span> OSSpinLock lock = OS_SPINLOCK_INIT;
-    <span style="font-style:italic">// To keep things thread-safe, we fill in the originalIMP later,
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">// with the result of the class_replaceMethod call below.
-</span><span style="font-style:italic"></span>    <span style="font-weight:bold">__block</span> <span style="">IMP</span> originalIMP = NULL;
+    <span style="color:#204a87;font-weight:bold">__block</span> <span style="color:#000">OSSpinLock</span> <span style="color:#000">lock</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">OS_SPINLOCK_INIT</span><span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#8f5902;font-style:italic">// To keep things thread-safe, we fill in the originalIMP later,
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// with the result of the class_replaceMethod call below.
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#204a87;font-weight:bold">__block</span> <span style="color:#204a87;font-weight:bold">IMP</span> <span style="color:#000">originalIMP</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">NULL</span><span style="color:#000;font-weight:bold">;</span>
 
-    <span style="font-style:italic">// This block will be called by the client to get original implementation and call it.
-</span><span style="font-style:italic"></span>    RSSWizzleImpProvider originalImpProvider = ^<span style="">IMP</span>{
-        <span style="font-style:italic">// It&#39;s possible that another thread can call the method between the call to
-</span><span style="font-style:italic"></span>        <span style="font-style:italic">// class_replaceMethod and its return value being set.
-</span><span style="font-style:italic"></span>        <span style="font-style:italic">// So to be sure originalIMP has the right value, we need a lock.
-</span><span style="font-style:italic"></span>        OSSpinLockLock(&amp;lock);
-        <span style="">IMP</span> imp = originalIMP;
-        OSSpinLockUnlock(&amp;lock);
+    <span style="color:#8f5902;font-style:italic">// This block will be called by the client to get original implementation and call it.
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">RSSWizzleImpProvider</span> <span style="color:#000">originalImpProvider</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#ce5c00;font-weight:bold">^</span><span style="color:#204a87;font-weight:bold">IMP</span><span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#8f5902;font-style:italic">// It&#39;s possible that another thread can call the method between the call to
+</span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#8f5902;font-style:italic">// class_replaceMethod and its return value being set.
+</span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#8f5902;font-style:italic">// So to be sure originalIMP has the right value, we need a lock.
+</span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#000">OSSpinLockLock</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">lock</span><span style="color:#000;font-weight:bold">);</span>
+        <span style="color:#204a87;font-weight:bold">IMP</span> <span style="color:#000">imp</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">originalIMP</span><span style="color:#000;font-weight:bold">;</span>
+        <span style="color:#000">OSSpinLockUnlock</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">lock</span><span style="color:#000;font-weight:bold">);</span>
 
-        <span style="font-weight:bold">if</span> (NULL == imp){
-            <span style="font-style:italic">// If the class does not implement the method
-</span><span style="font-style:italic"></span>            <span style="font-style:italic">// we need to find an implementation in one of the superclasses.
-</span><span style="font-style:italic"></span>            <span style="">Class</span> superclass = class_getSuperclass(classToSwizzle);
-            imp = method_getImplementation(class_getInstanceMethod(superclass,selector));
-        }
-        <span style="font-weight:bold">return</span> imp;
-    };
+        <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87">NULL</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#000">imp</span><span style="color:#000;font-weight:bold">){</span>
+            <span style="color:#8f5902;font-style:italic">// If the class does not implement the method
+</span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#8f5902;font-style:italic">// we need to find an implementation in one of the superclasses.
+</span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#204a87;font-weight:bold">Class</span> <span style="color:#000">superclass</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">class_getSuperclass</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">classToSwizzle</span><span style="color:#000;font-weight:bold">);</span>
+            <span style="color:#000">imp</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">method_getImplementation</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">class_getInstanceMethod</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">superclass</span><span style="color:#000;font-weight:bold">,</span><span style="color:#000">selector</span><span style="color:#000;font-weight:bold">));</span>
+        <span style="color:#000;font-weight:bold">}</span>
+        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">imp</span><span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">};</span>
 
-    RSSwizzleInfo *swizzleInfo = [RSSwizzleInfo new];
-    swizzleInfo.selector = selector;
-    swizzleInfo.impProviderBlock = originalImpProvider;
+    <span style="color:#000">RSSwizzleInfo</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">swizzleInfo</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">RSSwizzleInfo</span> <span style="color:#000">new</span><span style="color:#000;font-weight:bold">];</span>
+    <span style="color:#000">swizzleInfo</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">selector</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">selector</span><span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000">swizzleInfo</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">impProviderBlock</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">originalImpProvider</span><span style="color:#000;font-weight:bold">;</span>
 
-    <span style="font-style:italic">// We ask the client for the new implementation block.
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">// We pass swizzleInfo as an argument to factory block, so the client can
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">// call original implementation from the new implementation.
-</span><span style="font-style:italic"></span>    <span style="">id</span> newIMPBlock = factoryBlock(swizzleInfo);
+    <span style="color:#8f5902;font-style:italic">// We ask the client for the new implementation block.
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// We pass swizzleInfo as an argument to factory block, so the client can
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// call original implementation from the new implementation.
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#204a87;font-weight:bold">id</span> <span style="color:#000">newIMPBlock</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">factoryBlock</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">swizzleInfo</span><span style="color:#000;font-weight:bold">);</span>
 
-    <span style="font-weight:bold">const</span> <span style="">char</span> *methodType = method_getTypeEncoding(method);
+    <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">char</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">methodType</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">method_getTypeEncoding</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">method</span><span style="color:#000;font-weight:bold">);</span>
 
-    NSCAssert(blockIsCompatibleWithMethodType(newIMPBlock,methodType),
-             <span style="font-style:italic">@&#34;Block returned from factory is not compatible with method type.&#34;</span>);
+    <span style="color:#000">NSCAssert</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">blockIsCompatibleWithMethodType</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">newIMPBlock</span><span style="color:#000;font-weight:bold">,</span><span style="color:#000">methodType</span><span style="color:#000;font-weight:bold">),</span>
+             <span style="color:#4e9a06">@&#34;Block returned from factory is not compatible with method type.&#34;</span><span style="color:#000;font-weight:bold">);</span>
 
-    <span style="">IMP</span> newIMP = imp_implementationWithBlock(newIMPBlock);
+    <span style="color:#204a87;font-weight:bold">IMP</span> <span style="color:#000">newIMP</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">imp_implementationWithBlock</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">newIMPBlock</span><span style="color:#000;font-weight:bold">);</span>
 
-    <span style="font-style:italic">// Atomically replace the original method with our new implementation.
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">// This will ensure that if someone else&#39;s code on another thread is messing
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">// with the class&#39; method list too, we always have a valid method at all times.
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">//
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">// If the class does not implement the method itself then
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">// class_replaceMethod returns NULL and superclasses&#39;s implementation will be used.
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">//
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">// We need a lock to be sure that originalIMP has the right value in the
-</span><span style="font-style:italic"></span>    <span style="font-style:italic">// originalImpProvider block above.
-</span><span style="font-style:italic"></span>    OSSpinLockLock(&amp;lock);
-    originalIMP = class_replaceMethod(classToSwizzle, selector, newIMP, methodType);
-    OSSpinLockUnlock(&amp;lock);
-}
+    <span style="color:#8f5902;font-style:italic">// Atomically replace the original method with our new implementation.
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// This will ensure that if someone else&#39;s code on another thread is messing
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// with the class&#39; method list too, we always have a valid method at all times.
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// If the class does not implement the method itself then
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// class_replaceMethod returns NULL and superclasses&#39;s implementation will be used.
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// We need a lock to be sure that originalIMP has the right value in the
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// originalImpProvider block above.
+</span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">OSSpinLockLock</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">lock</span><span style="color:#000;font-weight:bold">);</span>
+    <span style="color:#000">originalIMP</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">class_replaceMethod</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">classToSwizzle</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">selector</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">newIMP</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">methodType</span><span style="color:#000;font-weight:bold">);</span>
+    <span style="color:#000">OSSpinLockUnlock</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">lock</span><span style="color:#000;font-weight:bold">);</span>
+<span style="color:#000;font-weight:bold">}</span>
 </code></pre></div></li>
 </ul>
 
@@ -271,7 +269,7 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
         
           <div class="row">
             <div class="col-xs-12">
-              
+              <br/><br/><p>Subscribe：<a target="_blank" href="https://mailchi.mp/a1a0d59e7a19/joway"><b>Mailchimp</b></a></p><br/><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://blog.joway.io/images/cc.png" /></a>
             </div>
           </div>
 
@@ -291,7 +289,7 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
       
       var d = document,
         s = d.createElement("script");
-      s.src = "https://Feng.disqus.com/embed.js";
+      s.src = "https://joway.disqus.com/embed.js";
       s.setAttribute("data-timestamp", +new Date());
       (d.head || d.body).appendChild(s);
     })();
@@ -318,6 +316,12 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
   </article>
 
   
+<script src="https://cdn.jsdelivr.net/gh/joway/blog/js/lazyload.min.js"></script>
+<script>
+  var lazyImage = new LazyLoad({
+    container: document.getElementById('article')
+  });
+</script>
 
 <script>
   

@@ -349,5 +349,16 @@ X的悲剧 因为侦探是一名退休话剧演员的原因，整本书的结构
 焦虑是自由引起的眩晕 量子力学和平行宇宙的讨论，故事本身是相当有意思的。平行宇宙所带来的道德评价争论。 在有关自由意志的讨论中，很多人说，所谓你可以自由选择的行为——由你承担道德责任的那个行为——意味着在完全相同的条件下，你必须拥有作出不同选择的能力。哲学家不停地争论这究竟是什么意思。有些人指出，马丁·路德一五二一年对教会辩护他自己的行为时，他说：“我站在这里，无法去做别的。”也就是说，他不可能做出别的行为，可那是否意味着我们不应该赞赏他的行为。如果他说“我可以有别的做法”，我们当然不会认为他值得更多赞誉。 有关量子力学的多世界诠释，在大众的理解中，它的含义是：我们的宇宙不断地分裂成近乎无穷多个不同的版本。对此观点，我大体上抱有不可知的态度；但我觉得，它的支持者如果对它的含义做出更适度的主张，遇到的阻力便会小一些。比如，有人辩称，多世界诠释致使我们的选择变得毫无意义，因为不论你怎么做，总有另外一个你采取相反做法的宇宙存在，来抵消你所作决定的道德权重。我相当确信的是，即使多世界诠释是正确的，它也不意味着我们所有的决定都会被抵消。如果一个人的性格特征由他长久以来所作的决定所体现，那么，同样也会从他在多个世界中所作的决定中昭示出来。假如你可以用某种方法调查马丁·路德在多个世界中的态度，要发现一个他没有反抗教会的世界，我觉得你得查找很多，而这，就证明了他是个什么样的人。</description>
     </item>
     
+    <item>
+      <title>About Hugo</title>
+      <link>http://example.org/about/</link>
+      <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/about/</guid>
+      <description>Hugo is the world’s fastest framework for building websites. It is written in Go.
+It makes use of a variety of open source projects including:
+ https://github.com/russross/blackfriday https://github.com/alecthomas/chroma https://github.com/muesli/smartcrop https://github.com/spf13/cobra https://github.com/spf13/viper  Learn more and contribute on GitHub.</description>
+    </item>
+    
   </channel>
 </rss>
