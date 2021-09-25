@@ -6,7 +6,7 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="author" content="Joway" />
+  <meta name="author" content="Feng" />
   <meta property="og:url" content="http://example.org/posts/method-swizzle/" />
   <link rel="canonical" href="http://example.org/posts/method-swizzle/" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Feng&#39;s Annex">
 
@@ -19,15 +19,15 @@
            "@id": "http:\/\/example.org\/"
       },
       "articleSection" : "posts",
-      "name" : "Method Swizzle",
-      "headline" : "Method Swizzle",
+      "name" : "iOS | Method Swizzle",
+      "headline" : "iOS | Method Swizzle",
       "description" : "iOS中Method swizzling的使用\n掘金\nOC的runtime十分的强大，其中一个灵活的黑魔法就是Method Swizzle。\nSwizzle的本质是：在运行时交换方法的实现（IMP）。灵活的使用swizzle，可以达到hook的效果，开发者可以hook住系统的方法或者生命周期，来做一些自定义的操作。\n原理 Objective-C的消息机制：在 Objective-C 中调用一个方法， 实际上是在底层通过 objc_msgSend()发送一个消息。 而查找消息的唯一依据是selector的方法名。\n[obj doSomething]; \/\/\/ =\u0026gt; objc_msgSend(obj,@selector(doSomething))  每一个OC实例对象都保存有isa指针和实例变量，其中isa指针所属类，类维护一个运行时可接收的方法列表(MethodLists)； 方法列表(MethodLists)中保存selector \u0026amp; IMP的映射关系。在运行时，通过selecter找到匹配的IMP，从而找到的具体的实现函数。\n开发中可以利用Objective-C的动态特性，在运行时替换selector对应的方法实现（IMP），达到给hook的目的。下图是利用 Method Swizzle 来替换selector对应IMP后的方法列表示意图。\nMethod%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0\/16b06aaf3816730ctplv-t2oaga2asx-watermark.awebp\n使用时注意   在使用swizzle的时候，可以在category中实现\n  swizzling 应该只在 dispatch_once 中完成\n由于 swizzling 改变了全局的状态，所以我们需要确保每个预防措施在运行时都是可用的。原子操作就是这样一个用于确保代码只会被执行一次的预防措施，就算是在不同的线程中也能确保代码只执行一次。Grand Central Dispatch 的 dispatch_once 满足了所需要的需求，并且应该被当做使用 swizzling 的初始化单例方法的标准。\n  swizzling 应该只在 \u002bload 中完成\n在 Objective-C 的运行时中，每个类有两个方法都会自动调用。\u002bload 是在一个类被初始装载时调用，\u002binitialize 是在应用第一次调用该类的类方法或实例方法前调用的。两个方法都是可选的，并且只有在方法被实现的情况下才会被调用。\n  要记得调用原来的方法\n下面代码在正常情况下会出现循环：\n- (void)xxx_viewWillAppear:(BOOL)animated { [self xxx_viewWillAppear:animated]; NSLog(@\u0026#34;viewWillAppear: %@\u0026#34;, NSStringFromClass([self class])); } 然而在交换了方法实现后就不会出现循环了。好的程序员应该对这里出现的方法的递归调用有所警觉，这里我们应该理清在 method swizzling 后方法的实现究竟变成了什么。在交换了方法的实现后，xxx_viewWillAppear:方法的实现已经被替换为了 UIViewController -viewWillAppear：的原生实现，所以这里并不是在递归调用。由于 xxx_viewWillAppear: 这个方法的实现已经被替换为了 viewWillAppear: 的实现，所以，当我们在这个方法中再调用 viewWillAppear: 时便会造成递归循环。",
       "inLanguage" : "en-US",
-      "author" : "Joway",
-      "creator" : "Joway",
-      "publisher": "Joway",
-      "accountablePerson" : "Joway",
-      "copyrightHolder" : "Joway",
+      "author" : "Feng",
+      "creator" : "Feng",
+      "publisher": "Feng",
+      "accountablePerson" : "Feng",
+      "copyrightHolder" : "Feng",
       "copyrightYear" : "2021",
       "datePublished": "2021-09-24 00:00:00 \u002b0000 UTC",
       "dateModified" : "2021-09-24 00:00:00 \u002b0000 UTC",
@@ -35,8 +35,8 @@
       "keywords" : [  ]
   }
 </script>
-<title>Method Swizzle</title>
-  <meta property="og:title" content="Method Swizzle" />
+<title>iOS | Method Swizzle</title>
+  <meta property="og:title" content="iOS | Method Swizzle" />
   <meta property="og:type" content="article" />
   <meta property="og:description" content="iOS中Method swizzling的使用
 掘金
@@ -130,7 +130,7 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
 
         </div>
         <header class="post-header">
-          <h1 class="post-title">Method Swizzle</h1>
+          <h1 class="post-title">iOS | Method Swizzle</h1>
           
           <div class="row post-desc">
             <div class="col-xs-6">
@@ -143,7 +143,7 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
             <div class="col-xs-6">
               
               <div class="post-author">
-                <a target="_blank" href="https://joway.io/">@Joway</a>
+                <a target="_blank" href="https://joway.io/">@Feng</a>
               </div>
               
             </div>
@@ -291,7 +291,7 @@ Method%20Swizzle%2076aa8a50bd07495cae3a80f89563d2f0/16b06aaf3816730ctplv-t2oaga2
       
       var d = document,
         s = d.createElement("script");
-      s.src = "https://joway.disqus.com/embed.js";
+      s.src = "https://Feng.disqus.com/embed.js";
       s.setAttribute("data-timestamp", +new Date());
       (d.head || d.body).appendChild(s);
     })();
