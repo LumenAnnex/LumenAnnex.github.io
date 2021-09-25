@@ -6,11 +6,11 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="author" content="Feng" />
+  <meta name="author" content="Lumen" />
   <meta property="og:url" content="http://example.org/posts/ios-router/" />
-  <link rel="canonical" href="http://example.org/posts/ios-router/" /><link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/joway/blog" /><link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="canonical" href="http://example.org/posts/ios-router/" /><link rel="apple-touch-icon" href="/logo.png" />
   <link rel="icon" href="/logo.png" />
-  <link rel="shortcut" href="/logo.png" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Feng&#39;s Annex">
+  <link rel="shortcut" href="/logo.png" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Lumen&#39;s Annex">
 
   <script type="application/ld+json">
   {
@@ -25,11 +25,11 @@
       "headline" : "iOS | Router",
       "description" : "路由定义 简洁来说：路由是一个映射方法。我们将输入的信息以某种特定的方式进行转换，最后输出转换计算后的资源。\n我们用另外一个原理一致的流程来描述这件事情。客户端需要从后端获取数据，我们发出了一条request，后端获取并解析这条request，在他们自己的逻辑中做一些操作（对数据库增删改查），最后输出一条结果，返回给客户端。\n这其实就是一个典型的路由的过程。\n对于后端来说，数据本身就是资源；对于客户端和前端来说，页面就是资源。我们最常见到的一种情况是页面间的路由跳转，实际上可以把它理解成，我们输入了一条想要跳转的路由指令，在客户端内部的映射计算之后，返回了一个结果，这个结果就是一个VC。\n路由用来解决什么问题  页面间的耦合。以上面的情况来说，如果我们通过navigationController来惊醒页面间的跳转，就势必在一个VC中引入另一个VC。这就造成了耦合。那么再假设，iOS上支持3D touch，很可能用户会一下就跳进一个非常深的页面。这样的耦合就很恐怖。 组件间的耦合。随着业务的发展，组件之间的耦合也十分容易产生。好的组件应当尽量避免组件之间的耦合。  iOS APP之间的跳转 再进一步的研究之前，让我们首先看看iOS的APP之间是如何跳转的。这或许对我们有一些启示。\niOS APP之间的跳转有两种方式：URL Scheme和Universal Link。\nURL Scheme是每个APP可以提供一个URL，直接在浏览器中输入URL就可以跳转打开对应的APP。这个scheme是可以在info.plist里面去配的。\n如何设计好的路由 路由最主要实现的功能：\n 注册路由 管理路由资源 匹配和派发资源  做的好的路由应当是没有感知的，悄无声息的就帮助系统完成了互相连接的工作。这样的设计自然比较困按钮，我们从几个例子来看看路由的设计方式\nJLRoutes JLRoutes存储了一个全局的map，这个Map会以scheme为Key，JLRoutes为Value。所以在routeControllerMap里面每个scheme都是唯一的。\nJLRoutes里面会保存一个数组，数组内部存储了路由规则里面包含的外部传入的闭包，并且会根据优先级进行排序路由。所以实际上，JLRoute内部维护了一个单调队列，所以再插入路由的时候直接顺序遍历就可以了。\n这是存储和注册的过程。那么怎么进行查询和映射呢？JLRoutes会根据外部传入的URL和一些额外的参数构建一个request。这个请求会在当前的JLRoute的路由数组内依次的请求，数组内部的每一个规则会生成一个response。只有符合条件的response才可以match，最后找到匹配的response，从里面的字典参数取出来返回即可。\n优点：\n 能匹配多种不同规则的 URL，可以定义自定义的匹配规则、匹配逻辑 可以指定每个路由的优先级  缺点：\n 当注册的 URL 比较多时，匹配效率比较低。  A Router A的router主要分为两个过程，注册和路由跳转。A的注册是懒注册的，在第一次使用该路由的时候，如果没在全局的映射表中找到对应的路由，那么就会开始注册。所有的路由信息都是写入到Data段内，直接从中读取。\n参考文献 Halfrost-Field\/iOS_Router.md at master · halfrost\/Halfrost-Field",
       "inLanguage" : "en-US",
-      "author" : "Feng",
-      "creator" : "Feng",
-      "publisher": "Feng",
-      "accountablePerson" : "Feng",
-      "copyrightHolder" : "Feng",
+      "author" : "Lumen",
+      "creator" : "Lumen",
+      "publisher": "Lumen",
+      "accountablePerson" : "Lumen",
+      "copyrightHolder" : "Lumen",
       "copyrightYear" : "2021",
       "datePublished": "2021-08-13 00:00:00 \u002b0000 UTC",
       "dateModified" : "2021-08-13 00:00:00 \u002b0000 UTC",
@@ -83,8 +83,8 @@ JLRoutes里面会保存一个数组，数组内部存储了路由规则里面包
 
   
 
-  <link href="https://cdn.jsdelivr.net/gh/joway/blog/index.xml" rel="alternate" type="application/rss+xml"
-    title="Feng&#39;s Annex">
+  <link href="/index.xml" rel="alternate" type="application/rss+xml"
+    title="Lumen&#39;s Annex">
   
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Bungee+Shade" rel="stylesheet">
@@ -105,16 +105,12 @@ JLRoutes里面会保存一个数组，数组内部存储了路由规则里面包
 <header>
   <div class="header-title">
     <a href="/"
-      >Feng&#39;s Annex</a
+      >Lumen&#39;s Annex</a
     >
   </div>
-  <div class="header-subtitle">Log something useless, but interesting.</div>
+  <div class="header-subtitle">Le vent se lève ，il faut tenter de vivre.</div>
 </header>
 <div class="row end-md center-xs header-items">
-  
-  <div class="header-item">
-    <a href="https://mailchi.mp/a1a0d59e7a19/joway" target="_blank">Subscribe</a>
-  </div>
   
   <div class="header-item">
     <a href="/about" target="_blank">About</a>
@@ -141,7 +137,7 @@ JLRoutes里面会保存一个数组，数组内部存储了路由规则里面包
             <div class="col-xs-6">
               
               <div class="post-author">
-                <a target="_blank" href="https://joway.io/">@Feng</a>
+                <a target="_blank" href="https://joway.io/">@Lumen</a>
               </div>
               
             </div>
@@ -202,7 +198,7 @@ JLRoutes里面会保存一个数组，数组内部存储了路由规则里面包
         
           <div class="row">
             <div class="col-xs-12">
-              <br/><br/><p>Subscribe：<a target="_blank" href="https://mailchi.mp/a1a0d59e7a19/joway"><b>Mailchimp</b></a></p><br/><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://blog.joway.io/images/cc.png" /></a>
+              
             </div>
           </div>
 
@@ -222,7 +218,7 @@ JLRoutes里面会保存一个数组，数组内部存储了路由规则里面包
       
       var d = document,
         s = d.createElement("script");
-      s.src = "https://joway.disqus.com/embed.js";
+      s.src = "https://Lumen.disqus.com/embed.js";
       s.setAttribute("data-timestamp", +new Date());
       (d.head || d.body).appendChild(s);
     })();
@@ -249,7 +245,7 @@ JLRoutes里面会保存一个数组，数组内部存储了路由规则里面包
   </article>
 
   
-<script src="https://cdn.jsdelivr.net/gh/joway/blog/js/lazyload.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
 <script>
   var lazyImage = new LazyLoad({
     container: document.getElementById('article')

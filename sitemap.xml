@@ -5,13 +5,13 @@
     <loc>http://example.org/categories/</loc>
     <lastmod>2021-09-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://example.org/</loc>
-    <lastmod>2021-09-24T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://example.org/categories/ios/</loc>
     <lastmod>2021-09-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://example.org/posts/method-swizzle/</loc>
+    <lastmod>2021-09-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://example.org/</loc>
     <lastmod>2021-09-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://example.org/posts/</loc>

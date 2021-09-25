@@ -6,11 +6,11 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="author" content="Feng" />
+  <meta name="author" content="Lumen" />
   <meta property="og:url" content="http://example.org/posts/%E9%A2%91%E6%8E%A7%E9%97%AE%E9%A2%98/" />
-  <link rel="canonical" href="http://example.org/posts/%E9%A2%91%E6%8E%A7%E9%97%AE%E9%A2%98/" /><link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/joway/blog" /><link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="canonical" href="http://example.org/posts/%E9%A2%91%E6%8E%A7%E9%97%AE%E9%A2%98/" /><link rel="apple-touch-icon" href="/logo.png" />
   <link rel="icon" href="/logo.png" />
-  <link rel="shortcut" href="/logo.png" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Feng&#39;s Annex">
+  <link rel="shortcut" href="/logo.png" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Lumen&#39;s Annex">
 
   <script type="application/ld+json">
   {
@@ -25,11 +25,11 @@
       "headline" : "iOS 丨 频控问题",
       "description" : "背景 客户端有时监听了若干状态。比如不同的VIP状态等，在每次监听改变的时候可能需要重新向后端发请求。这样可能产生的情况是，当某个状态发生改变的时候，多个地方都会监听到，这样可能导致短时间内发出大量相同请求。后端可能进行了频控，这样就会导致拿不到数据展示错误的样式。\ndebounce \u0026amp; Throttle 前端可能会经常使用的两个方法：防抖和节流。可以在这个场景内去使用。\ndebounce方法的作用是，在触发方法后的一段时间内，才真正的调用方法。如果在等待的时间内重新有新的触发，那么就会重新计算时间。Throttle方法的作用是，在一段时间内对方法的触发会压缩为一个。\n在这个情况下，我们可以使用throttle的方法，在一段时间内的响应，只发送一个请求。\n实现 RxSwift 有两种实现的方法。因为项目是用swift开发的，可以直接引入RxSwift库，GitHub - ReactiveX\/RxSwift: Reactive Programming in Swift。\nprivate let vipChangePublishSubJect = PublishSubject\u0026lt;Void\u0026gt;() private let disposeBag = DisposeBag() vipChangePublishSubJect .debounce(.milliseconds(200), scheduler: MainScheduler.instance) .subscribe {[weak self] (_) in \/\/action }.disposed(by: disposeBag) 在我们当前的业务场景下，这不见得是非常好的一种做法。使用这种方法意味着要在每一个业务场景去进行单独的设置，这样显然是不好的做法。在我们的业务中，会发生频控的原因在于，业务场景需要监听权益的变化，在权益变化的时候发送请求对用户看到的内容进行刷新。权益本身的变化可能有多个，其中的一个权益内容发生变化可能会重新发送一次请求。最好的做法是，我们在源头，也就是在监听权益内容的地方进行限流。\n自己实现 自己实现一个debounce方法。这里有意思的一点在于，虽然说的是debounce方法，但实际上却是Throttle。本质上是将一段时间内的方法触发delay，这段时间内对方法的额外触发将不会重新的触发方法。\n要实现这个方法，我们可以使用Dispatchworkitem来实现。本质思路是，因为可能涉及到多个权益切换的监听，每一种切换可能发送出去不同的请求。因此要对不同的切换进行不同的响应。因此还需要使用associate进行关联。\nprivate func vipChangeDebounce() -\u0026gt; DispatchWorkItem { let workItem: DispatchWorkItem? = getAssociated(associatedKey: \u0026amp;Key) if let result = workItem { result.cancel() return result } else { let workItem: DispatchWorkItem = DispatchWorkItem(block: { [weak self] in delay(0.",
       "inLanguage" : "en-US",
-      "author" : "Feng",
-      "creator" : "Feng",
-      "publisher": "Feng",
-      "accountablePerson" : "Feng",
-      "copyrightHolder" : "Feng",
+      "author" : "Lumen",
+      "creator" : "Lumen",
+      "publisher": "Lumen",
+      "accountablePerson" : "Lumen",
+      "copyrightHolder" : "Lumen",
       "copyrightYear" : "2020",
       "datePublished": "2020-10-31 00:00:00 \u002b0000 UTC",
       "dateModified" : "2020-10-31 00:00:00 \u002b0000 UTC",
@@ -69,8 +69,8 @@ private func vipChangeDebounce() -&amp;gt; DispatchWorkItem { let workItem: Disp
 
   
 
-  <link href="https://cdn.jsdelivr.net/gh/joway/blog/index.xml" rel="alternate" type="application/rss+xml"
-    title="Feng&#39;s Annex">
+  <link href="/index.xml" rel="alternate" type="application/rss+xml"
+    title="Lumen&#39;s Annex">
   
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Bungee+Shade" rel="stylesheet">
@@ -91,16 +91,12 @@ private func vipChangeDebounce() -&amp;gt; DispatchWorkItem { let workItem: Disp
 <header>
   <div class="header-title">
     <a href="/"
-      >Feng&#39;s Annex</a
+      >Lumen&#39;s Annex</a
     >
   </div>
-  <div class="header-subtitle">Log something useless, but interesting.</div>
+  <div class="header-subtitle">Le vent se lève ，il faut tenter de vivre.</div>
 </header>
 <div class="row end-md center-xs header-items">
-  
-  <div class="header-item">
-    <a href="https://mailchi.mp/a1a0d59e7a19/joway" target="_blank">Subscribe</a>
-  </div>
   
   <div class="header-item">
     <a href="/about" target="_blank">About</a>
@@ -127,7 +123,7 @@ private func vipChangeDebounce() -&amp;gt; DispatchWorkItem { let workItem: Disp
             <div class="col-xs-6">
               
               <div class="post-author">
-                <a target="_blank" href="https://joway.io/">@Feng</a>
+                <a target="_blank" href="https://joway.io/">@Lumen</a>
               </div>
               
             </div>
@@ -210,7 +206,7 @@ private func vipChangeDebounce() -&amp;gt; DispatchWorkItem { let workItem: Disp
         
           <div class="row">
             <div class="col-xs-12">
-              <br/><br/><p>Subscribe：<a target="_blank" href="https://mailchi.mp/a1a0d59e7a19/joway"><b>Mailchimp</b></a></p><br/><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://blog.joway.io/images/cc.png" /></a>
+              
             </div>
           </div>
 
@@ -230,7 +226,7 @@ private func vipChangeDebounce() -&amp;gt; DispatchWorkItem { let workItem: Disp
       
       var d = document,
         s = d.createElement("script");
-      s.src = "https://joway.disqus.com/embed.js";
+      s.src = "https://Lumen.disqus.com/embed.js";
       s.setAttribute("data-timestamp", +new Date());
       (d.head || d.body).appendChild(s);
     })();
@@ -257,7 +253,7 @@ private func vipChangeDebounce() -&amp;gt; DispatchWorkItem { let workItem: Disp
   </article>
 
   
-<script src="https://cdn.jsdelivr.net/gh/joway/blog/js/lazyload.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
 <script>
   var lazyImage = new LazyLoad({
     container: document.getElementById('article')
