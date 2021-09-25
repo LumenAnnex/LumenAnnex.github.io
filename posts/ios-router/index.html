@@ -7,8 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="author" content="Joway" />
-  <meta property="og:url" content="http://example.org/posts/" />
-  <link rel="canonical" href="http://example.org/posts/" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Feng&#39;s Annex">
+  <meta property="og:url" content="http://example.org/posts/ios-router/" />
+  <link rel="canonical" href="http://example.org/posts/ios-router/" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Feng&#39;s Annex">
 
   <script type="application/ld+json">
   {
@@ -19,9 +19,9 @@
            "@id": "http:\/\/example.org\/"
       },
       "articleSection" : "posts",
-      "name" : "Posts",
-      "headline" : "Posts",
-      "description" : "",
+      "name" : "iOS | Router",
+      "headline" : "iOS | Router",
+      "description" : "路由定义 简洁来说：路由是一个映射方法。我们将输入的信息以某种特定的方式进行转换，最后输出转换计算后的资源。\n我们用另外一个原理一致的流程来描述这件事情。客户端需要从后端获取数据，我们发出了一条request，后端获取并解析这条request，在他们自己的逻辑中做一些操作（对数据库增删改查），最后输出一条结果，返回给客户端。\n这其实就是一个典型的路由的过程。\n对于后端来说，数据本身就是资源；对于客户端和前端来说，页面就是资源。我们最常见到的一种情况是页面间的路由跳转，实际上可以把它理解成，我们输入了一条想要跳转的路由指令，在客户端内部的映射计算之后，返回了一个结果，这个结果就是一个VC。\n路由用来解决什么问题  页面间的耦合。以上面的情况来说，如果我们通过navigationController来惊醒页面间的跳转，就势必在一个VC中引入另一个VC。这就造成了耦合。那么再假设，iOS上支持3D touch，很可能用户会一下就跳进一个非常深的页面。这样的耦合就很恐怖。 组件间的耦合。随着业务的发展，组件之间的耦合也十分容易产生。好的组件应当尽量避免组件之间的耦合。  iOS APP之间的跳转 再进一步的研究之前，让我们首先看看iOS的APP之间是如何跳转的。这或许对我们有一些启示。\niOS APP之间的跳转有两种方式：URL Scheme和Universal Link。\nURL Scheme是每个APP可以提供一个URL，直接在浏览器中输入URL就可以跳转打开对应的APP。这个scheme是可以在info.plist里面去配的。\n如何设计好的路由 路由最主要实现的功能：\n 注册路由 管理路由资源 匹配和派发资源  做的好的路由应当是没有感知的，悄无声息的就帮助系统完成了互相连接的工作。这样的设计自然比较困按钮，我们从几个例子来看看路由的设计方式\nJLRoutes JLRoutes存储了一个全局的map，这个Map会以scheme为Key，JLRoutes为Value。所以在routeControllerMap里面每个scheme都是唯一的。\nJLRoutes里面会保存一个数组，数组内部存储了路由规则里面包含的外部传入的闭包，并且会根据优先级进行排序路由。所以实际上，JLRoute内部维护了一个单调队列，所以再插入路由的时候直接顺序遍历就可以了。\n这是存储和注册的过程。那么怎么进行查询和映射呢？JLRoutes会根据外部传入的URL和一些额外的参数构建一个request。这个请求会在当前的JLRoute的路由数组内依次的请求，数组内部的每一个规则会生成一个response。只有符合条件的response才可以match，最后找到匹配的response，从里面的字典参数取出来返回即可。\n优点：\n 能匹配多种不同规则的 URL，可以定义自定义的匹配规则、匹配逻辑 可以指定每个路由的优先级  缺点：\n 当注册的 URL 比较多时，匹配效率比较低。  A Router A的router主要分为两个过程，注册和路由跳转。A的注册是懒注册的，在第一次使用该路由的时候，如果没在全局的映射表中找到对应的路由，那么就会开始注册。所有的路由信息都是写入到Data段内，直接从中读取。\n参考文献 Halfrost-Field\/iOS_Router.md at master · halfrost\/Halfrost-Field",
       "inLanguage" : "en-US",
       "author" : "Joway",
       "creator" : "Joway",
@@ -29,17 +29,47 @@
       "accountablePerson" : "Joway",
       "copyrightHolder" : "Joway",
       "copyrightYear" : "2021",
-      "datePublished": "2021-09-24 00:00:00 \u002b0000 UTC",
-      "dateModified" : "2021-09-24 00:00:00 \u002b0000 UTC",
-      "url" : "http:\/\/example.org\/posts\/",
+      "datePublished": "2021-08-13 00:00:00 \u002b0000 UTC",
+      "dateModified" : "2021-08-13 00:00:00 \u002b0000 UTC",
+      "url" : "http:\/\/example.org\/posts\/ios-router\/",
       "keywords" : [  ]
   }
 </script>
-<title>Posts</title>
-  <meta property="og:title" content="Posts" />
+<title>iOS | Router</title>
+  <meta property="og:title" content="iOS | Router" />
   <meta property="og:type" content="article" />
-  <meta property="og:description" content="" />
-  <meta name="description" content="" />
+  <meta property="og:description" content="路由定义 简洁来说：路由是一个映射方法。我们将输入的信息以某种特定的方式进行转换，最后输出转换计算后的资源。
+我们用另外一个原理一致的流程来描述这件事情。客户端需要从后端获取数据，我们发出了一条request，后端获取并解析这条request，在他们自己的逻辑中做一些操作（对数据库增删改查），最后输出一条结果，返回给客户端。
+这其实就是一个典型的路由的过程。
+对于后端来说，数据本身就是资源；对于客户端和前端来说，页面就是资源。我们最常见到的一种情况是页面间的路由跳转，实际上可以把它理解成，我们输入了一条想要跳转的路由指令，在客户端内部的映射计算之后，返回了一个结果，这个结果就是一个VC。
+路由用来解决什么问题  页面间的耦合。以上面的情况来说，如果我们通过navigationController来惊醒页面间的跳转，就势必在一个VC中引入另一个VC。这就造成了耦合。那么再假设，iOS上支持3D touch，很可能用户会一下就跳进一个非常深的页面。这样的耦合就很恐怖。 组件间的耦合。随着业务的发展，组件之间的耦合也十分容易产生。好的组件应当尽量避免组件之间的耦合。  iOS APP之间的跳转 再进一步的研究之前，让我们首先看看iOS的APP之间是如何跳转的。这或许对我们有一些启示。
+iOS APP之间的跳转有两种方式：URL Scheme和Universal Link。
+URL Scheme是每个APP可以提供一个URL，直接在浏览器中输入URL就可以跳转打开对应的APP。这个scheme是可以在info.plist里面去配的。
+如何设计好的路由 路由最主要实现的功能：
+ 注册路由 管理路由资源 匹配和派发资源  做的好的路由应当是没有感知的，悄无声息的就帮助系统完成了互相连接的工作。这样的设计自然比较困按钮，我们从几个例子来看看路由的设计方式
+JLRoutes JLRoutes存储了一个全局的map，这个Map会以scheme为Key，JLRoutes为Value。所以在routeControllerMap里面每个scheme都是唯一的。
+JLRoutes里面会保存一个数组，数组内部存储了路由规则里面包含的外部传入的闭包，并且会根据优先级进行排序路由。所以实际上，JLRoute内部维护了一个单调队列，所以再插入路由的时候直接顺序遍历就可以了。
+这是存储和注册的过程。那么怎么进行查询和映射呢？JLRoutes会根据外部传入的URL和一些额外的参数构建一个request。这个请求会在当前的JLRoute的路由数组内依次的请求，数组内部的每一个规则会生成一个response。只有符合条件的response才可以match，最后找到匹配的response，从里面的字典参数取出来返回即可。
+优点：
+ 能匹配多种不同规则的 URL，可以定义自定义的匹配规则、匹配逻辑 可以指定每个路由的优先级  缺点：
+ 当注册的 URL 比较多时，匹配效率比较低。  A Router A的router主要分为两个过程，注册和路由跳转。A的注册是懒注册的，在第一次使用该路由的时候，如果没在全局的映射表中找到对应的路由，那么就会开始注册。所有的路由信息都是写入到Data段内，直接从中读取。
+参考文献 Halfrost-Field/iOS_Router.md at master · halfrost/Halfrost-Field" />
+  <meta name="description" content="路由定义 简洁来说：路由是一个映射方法。我们将输入的信息以某种特定的方式进行转换，最后输出转换计算后的资源。
+我们用另外一个原理一致的流程来描述这件事情。客户端需要从后端获取数据，我们发出了一条request，后端获取并解析这条request，在他们自己的逻辑中做一些操作（对数据库增删改查），最后输出一条结果，返回给客户端。
+这其实就是一个典型的路由的过程。
+对于后端来说，数据本身就是资源；对于客户端和前端来说，页面就是资源。我们最常见到的一种情况是页面间的路由跳转，实际上可以把它理解成，我们输入了一条想要跳转的路由指令，在客户端内部的映射计算之后，返回了一个结果，这个结果就是一个VC。
+路由用来解决什么问题  页面间的耦合。以上面的情况来说，如果我们通过navigationController来惊醒页面间的跳转，就势必在一个VC中引入另一个VC。这就造成了耦合。那么再假设，iOS上支持3D touch，很可能用户会一下就跳进一个非常深的页面。这样的耦合就很恐怖。 组件间的耦合。随着业务的发展，组件之间的耦合也十分容易产生。好的组件应当尽量避免组件之间的耦合。  iOS APP之间的跳转 再进一步的研究之前，让我们首先看看iOS的APP之间是如何跳转的。这或许对我们有一些启示。
+iOS APP之间的跳转有两种方式：URL Scheme和Universal Link。
+URL Scheme是每个APP可以提供一个URL，直接在浏览器中输入URL就可以跳转打开对应的APP。这个scheme是可以在info.plist里面去配的。
+如何设计好的路由 路由最主要实现的功能：
+ 注册路由 管理路由资源 匹配和派发资源  做的好的路由应当是没有感知的，悄无声息的就帮助系统完成了互相连接的工作。这样的设计自然比较困按钮，我们从几个例子来看看路由的设计方式
+JLRoutes JLRoutes存储了一个全局的map，这个Map会以scheme为Key，JLRoutes为Value。所以在routeControllerMap里面每个scheme都是唯一的。
+JLRoutes里面会保存一个数组，数组内部存储了路由规则里面包含的外部传入的闭包，并且会根据优先级进行排序路由。所以实际上，JLRoute内部维护了一个单调队列，所以再插入路由的时候直接顺序遍历就可以了。
+这是存储和注册的过程。那么怎么进行查询和映射呢？JLRoutes会根据外部传入的URL和一些额外的参数构建一个request。这个请求会在当前的JLRoute的路由数组内依次的请求，数组内部的每一个规则会生成一个response。只有符合条件的response才可以match，最后找到匹配的response，从里面的字典参数取出来返回即可。
+优点：
+ 能匹配多种不同规则的 URL，可以定义自定义的匹配规则、匹配逻辑 可以指定每个路由的优先级  缺点：
+ 当注册的 URL 比较多时，匹配效率比较低。  A Router A的router主要分为两个过程，注册和路由跳转。A的注册是懒注册的，在第一次使用该路由的时候，如果没在全局的映射表中找到对应的路由，那么就会开始注册。所有的路由信息都是写入到Data段内，直接从中读取。
+参考文献 Halfrost-Field/iOS_Router.md at master · halfrost/Halfrost-Field" />
   <meta property="og:locale" content="en-us" />
 
   
@@ -65,10 +95,11 @@
 
 
 <body>
-  <article class="posts">
+  <article class="post Chinese" id="article">
     <div class="row">
       <div class="col-xs-12">
-        
+        <div class="site-header">
+          
 <header>
   <div class="header-title">
     <a href="/"
@@ -97,125 +128,118 @@
 </div>
 <div class="header-line"></div>
 
-
-        <h1 class="taxonomy-term"></h1>
-        <div id="posts-list">
-          <section>
-            <h1 class="site-date-catalog">2021</h1>
-
-            
-            <div class="row posts-line">
-              <div class="posts-date col-xs-2">
-                <time datetime="2021-09-24 00:00:00 UTC">Sep 24</time>
-              </div>
-              <div class="posts-title col-xs-10">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <a href="/posts/method-swizzle/">Method Swizzle</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="row posts-line">
-              <div class="posts-date col-xs-2">
-                <time datetime="2021-09-23 00:00:00 UTC">Sep 23</time>
-              </div>
-              <div class="posts-title col-xs-10">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <a href="/posts/%E6%97%A0%E9%9A%9C%E7%A2%8D-%E9%80%82%E8%80%81%E5%8C%96/">iOS｜无障碍 &amp; 适老化</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="row posts-line">
-              <div class="posts-date col-xs-2">
-                <time datetime="2021-08-13 00:00:00 UTC">Aug 13</time>
-              </div>
-              <div class="posts-title col-xs-10">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <a href="/posts/ios-router/">iOS | Router</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="row posts-line">
-              <div class="posts-date col-xs-2">
-                <time datetime="2021-07-25 00:00:00 UTC">Jul 25</time>
-              </div>
-              <div class="posts-title col-xs-10">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <a href="/posts/%E7%8E%A9%E8%BD%AC%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%86%8C/">iOS｜玩转系统相册</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-          </section>
-          <section>
-            <h1 class="site-date-catalog">2020</h1>
-
-            
-            <div class="row posts-line">
-              <div class="posts-date col-xs-2">
-                <time datetime="2020-11-07 00:00:00 UTC">Nov 07</time>
-              </div>
-              <div class="posts-title col-xs-10">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <a href="/posts/%E5%93%8D%E5%BA%94%E9%93%BE/">iOS丨响应链</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="row posts-line">
-              <div class="posts-date col-xs-2">
-                <time datetime="2020-10-31 00:00:00 UTC">Oct 31</time>
-              </div>
-              <div class="posts-title col-xs-10">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <a href="/posts/%E9%A2%91%E6%8E%A7%E9%97%AE%E9%A2%98/">iOS丨频控问题</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="row posts-line">
-              <div class="posts-date col-xs-2">
-                <time datetime="2020-09-08 00:00:00 UTC">Sep 08</time>
-              </div>
-              <div class="posts-title col-xs-10">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <a href="/posts/%E4%BD%BF%E7%94%A8avplayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91/">iOS丨使用AVPlayer播放视频</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="row posts-line">
-              <div class="posts-date col-xs-2">
-                <time datetime="2020-09-07 00:00:00 UTC">Sep 07</time>
-              </div>
-              <div class="posts-title col-xs-10">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <a href="/posts/%E6%89%A9%E5%A4%A7%E7%82%B9%E5%87%BB%E5%8C%BA%E5%9F%9F/">iOS丨扩大点击区域</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-          </section>
-          
         </div>
+        <header class="post-header">
+          <h1 class="post-title">iOS | Router</h1>
+          
+          <div class="row post-desc">
+            <div class="col-xs-6">
+              
+              <time class="post-date" datetime="2021-08-13 00:00:00 UTC">
+                13 Aug 2021
+              </time>
+              
+            </div>
+            <div class="col-xs-6">
+              
+              <div class="post-author">
+                <a target="_blank" href="https://joway.io/">@Joway</a>
+              </div>
+              
+            </div>
+          </div>
+          
+        </header>
+
+        <div class="post-content markdown-body">
+          
+          <h2 id="路由定义">路由定义</h2>
+<p>简洁来说：路由是一个映射方法。我们将输入的信息以某种特定的方式进行转换，最后输出转换计算后的资源。</p>
+<p>我们用另外一个原理一致的流程来描述这件事情。客户端需要从后端获取数据，我们发出了一条request，后端获取并解析这条request，在他们自己的逻辑中做一些操作（对数据库增删改查），最后输出一条结果，返回给客户端。</p>
+<p>这其实就是一个典型的路由的过程。</p>
+<p>对于后端来说，数据本身就是资源；对于客户端和前端来说，页面就是资源。我们最常见到的一种情况是页面间的路由跳转，实际上可以把它理解成，我们输入了一条想要跳转的路由指令，在客户端内部的映射计算之后，返回了一个结果，这个结果就是一个VC。</p>
+<h2 id="路由用来解决什么问题">路由用来解决什么问题</h2>
+<ul>
+<li>页面间的耦合。以上面的情况来说，如果我们通过navigationController来惊醒页面间的跳转，就势必在一个VC中引入另一个VC。这就造成了耦合。那么再假设，iOS上支持3D touch，很可能用户会一下就跳进一个非常深的页面。这样的耦合就很恐怖。</li>
+<li>组件间的耦合。随着业务的发展，组件之间的耦合也十分容易产生。好的组件应当尽量避免组件之间的耦合。</li>
+</ul>
+<h2 id="ios-app之间的跳转">iOS APP之间的跳转</h2>
+<p>再进一步的研究之前，让我们首先看看iOS的APP之间是如何跳转的。这或许对我们有一些启示。</p>
+<p>iOS APP之间的跳转有两种方式：URL Scheme和Universal Link。</p>
+<p>URL Scheme是每个APP可以提供一个URL，直接在浏览器中输入URL就可以跳转打开对应的APP。这个scheme是可以在info.plist里面去配的。</p>
+<h2 id="如何设计好的路由">如何设计好的路由</h2>
+<p>路由最主要实现的功能：</p>
+<ul>
+<li>注册路由</li>
+<li>管理路由资源</li>
+<li>匹配和派发资源</li>
+</ul>
+<p>做的好的路由应当是没有感知的，悄无声息的就帮助系统完成了互相连接的工作。这样的设计自然比较困按钮，我们从几个例子来看看路由的设计方式</p>
+<h3 id="jlroutes">JLRoutes</h3>
+<p>JLRoutes存储了一个全局的map，这个Map会以scheme为Key，JLRoutes为Value。所以在routeControllerMap里面每个scheme都是唯一的。</p>
+<p>JLRoutes里面会保存一个数组，数组内部存储了路由规则里面包含的外部传入的闭包，并且会根据优先级进行排序路由。所以实际上，JLRoute内部维护了一个单调队列，所以再插入路由的时候直接顺序遍历就可以了。</p>
+<p><img src="iOS%20Router%2021d819200c3149c6ac7ee80bde43471e/%E6%88%AA%E5%B1%8F2021-08-17_20.03.20.png" alt="截屏2021-08-17 20.03.20.png"></p>
+<p>这是存储和注册的过程。那么怎么进行查询和映射呢？JLRoutes会根据外部传入的URL和一些额外的参数构建一个request。这个请求会在当前的JLRoute的路由数组内依次的请求，数组内部的每一个规则会生成一个response。只有符合条件的response才可以match，最后找到匹配的response，从里面的字典参数取出来返回即可。</p>
+<p>优点：</p>
+<ul>
+<li>能匹配多种不同规则的 URL，可以定义自定义的匹配规则、匹配逻辑</li>
+<li>可以指定每个路由的优先级</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>当注册的 URL 比较多时，匹配效率比较低。</li>
+</ul>
+<h3 id="a-router">A Router</h3>
+<p>A的router主要分为两个过程，注册和路由跳转。A的注册是懒注册的，在第一次使用该路由的时候，如果没在全局的映射表中找到对应的路由，那么就会开始注册。所有的路由信息都是写入到Data段内，直接从中读取。</p>
+<h3 id="参考文献">参考文献</h3>
+<p><a href="https://github.com/halfrost/Halfrost-Field/blob/master/contents/iOS/iOSRouter/iOS_Router.md">Halfrost-Field/iOS_Router.md at master · halfrost/Halfrost-Field</a></p>
+
+        </div>
+
+        <div class="row middle-xs">
+          <div class="col-xs-12">
+            
+          </div>
+        </div>
+        
+          <div class="row">
+            <div class="col-xs-12">
+              
+            </div>
+          </div>
+
+          
+
+
+
+          
+          
+          <div style="height: 50px;"></div>
+          
+          <div class="post-comments">
+            <div id="disqus_thread"></div>
+<script>
+  window.addEventListener("load", () => {
+    (function() {
+      
+      var d = document,
+        s = d.createElement("script");
+      s.src = "https://joway.disqus.com/embed.js";
+      s.setAttribute("data-timestamp", +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  });
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
+          </div>
+          
+        
 
         <div class="site-footer">
   
@@ -235,6 +259,8 @@
     
   
 </script>
+
+  
 
 </body>
 

@@ -7,8 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="author" content="Joway" />
-  <meta property="og:url" content="http://example.org/categories/" />
-  <link rel="canonical" href="http://example.org/categories/" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Feng&#39;s Annex">
+  <meta property="og:url" content="http://example.org/posts/%E6%89%A9%E5%A4%A7%E7%82%B9%E5%87%BB%E5%8C%BA%E5%9F%9F/" />
+  <link rel="canonical" href="http://example.org/posts/%E6%89%A9%E5%A4%A7%E7%82%B9%E5%87%BB%E5%8C%BA%E5%9F%9F/" /><link rel="alternate" type="application/atom+xml" href="http://example.org/index.xml" title="Feng&#39;s Annex">
 
   <script type="application/ld+json">
   {
@@ -18,28 +18,30 @@
            "@type": "WebPage",
            "@id": "http:\/\/example.org\/"
       },
-      "articleSection" : "categories",
-      "name" : "Categories",
-      "headline" : "Categories",
-      "description" : "",
+      "articleSection" : "posts",
+      "name" : "iOS丨扩大点击区域",
+      "headline" : "iOS丨扩大点击区域",
+      "description" : "背景 有时UE给出的设计稿看起来很美观，对于用户来说并不是那么方便的进行操作。按钮可能小了容易误触，或者不容易触发。开发就需要灵活的去增大某个控件的点击区域，在这里总结一下可以使用的方法。\n",
       "inLanguage" : "en-US",
       "author" : "Joway",
       "creator" : "Joway",
       "publisher": "Joway",
       "accountablePerson" : "Joway",
       "copyrightHolder" : "Joway",
-      "copyrightYear" : "2021",
-      "datePublished": "2021-09-24 00:00:00 \u002b0000 UTC",
-      "dateModified" : "2021-09-24 00:00:00 \u002b0000 UTC",
-      "url" : "http:\/\/example.org\/categories\/",
+      "copyrightYear" : "2020",
+      "datePublished": "2020-09-07 00:00:00 \u002b0000 UTC",
+      "dateModified" : "2020-09-07 00:00:00 \u002b0000 UTC",
+      "url" : "http:\/\/example.org\/posts\/%E6%89%A9%E5%A4%A7%E7%82%B9%E5%87%BB%E5%8C%BA%E5%9F%9F\/",
       "keywords" : [  ]
   }
 </script>
-<title>Categories</title>
-  <meta property="og:title" content="Categories" />
+<title>iOS丨扩大点击区域</title>
+  <meta property="og:title" content="iOS丨扩大点击区域" />
   <meta property="og:type" content="article" />
-  <meta property="og:description" content="" />
-  <meta name="description" content="" />
+  <meta property="og:description" content="背景 有时UE给出的设计稿看起来很美观，对于用户来说并不是那么方便的进行操作。按钮可能小了容易误触，或者不容易触发。开发就需要灵活的去增大某个控件的点击区域，在这里总结一下可以使用的方法。
+" />
+  <meta name="description" content="背景 有时UE给出的设计稿看起来很美观，对于用户来说并不是那么方便的进行操作。按钮可能小了容易误触，或者不容易触发。开发就需要灵活的去增大某个控件的点击区域，在这里总结一下可以使用的方法。
+" />
   <meta property="og:locale" content="en-us" />
 
   
@@ -65,10 +67,11 @@
 
 
 <body>
-  <article class="posts">
+  <article class="post Chinese" id="article">
     <div class="row">
       <div class="col-xs-12">
-        
+        <div class="site-header">
+          
 <header>
   <div class="header-title">
     <a href="/"
@@ -97,11 +100,104 @@
 </div>
 <div class="header-line"></div>
 
-
-        <h1 class="taxonomy-term"></h1>
-        <div id="posts-list">
-          
         </div>
+        <header class="post-header">
+          <h1 class="post-title">iOS丨扩大点击区域</h1>
+          
+          <div class="row post-desc">
+            <div class="col-xs-6">
+              
+              <time class="post-date" datetime="2020-09-07 00:00:00 UTC">
+                07 Sep 2020
+              </time>
+              
+            </div>
+            <div class="col-xs-6">
+              
+              <div class="post-author">
+                <a target="_blank" href="https://joway.io/">@Joway</a>
+              </div>
+              
+            </div>
+          </div>
+          
+        </header>
+
+        <div class="post-content markdown-body">
+          
+          <h2 id="背景">背景</h2>
+<p>有时UE给出的设计稿看起来很美观，对于用户来说并不是那么方便的进行操作。按钮可能小了容易误触，或者不容易触发。开发就需要灵活的去增大某个控件的点击区域，在这里总结一下可以使用的方法。</p>
+<h2 id="touchview">touchView</h2>
+<p>一个很容易想到的方法是去增加一个touchview，增加一个透明的view盖在控件的上方或者下方。响应链会找到对应的事件进行触发。</p>
+<p>这样做十分的简单，但是唯一不好的一点是，本质上是增加了一层view，虽然是透明的层，但是我们尽可能的希望在渲染的时候减少渲染的图层的数量。更好的一种做法是直接的，增大可以触发事件的点击区域。</p>
+<h2 id="hittest">Hittest</h2>
+<h3 id="原理">原理</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-objectivec" data-lang="objectivec">- (nullable UIView *)hitTest:(CGPoint)point withEvent:(nullable UIEvent *)event;   <span style="font-style:italic">// recursively calls -pointInside:withEvent:. point is in the receiver&#39;s coordinate system
+</span></code></pre></div><p>先来看这个方法，hittest会一直回溯响应链上的view，直到找到包含目标point的view或者返回nil。这个目标的point就是用户点击的point。</p>
+<p>hittest会回溯整个图层树，对每一个view调用 <a href="https://developer.apple.com/documentation/uikit/uiview/1622533-point">func point(inside: CGPoint, with: UIEvent?) -&gt; Bool</a> 这个方法，来决定哪一个view来接受event并作出响应。</p>
+<p>hittest会忽略掉被hidden的view，disable用户交互的view、alpha低于0.01的view。</p>
+<h3 id="使用">使用</h3>
+<p>在实际的业务逻辑里面，这个hittest实现的逻辑要根据具体的业务逻辑进行重写。</p>
+<p>来看一个典型的使用流程。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-swift" data-lang="swift">    <span style="font-weight:bold">public</span> <span style="font-weight:bold">override</span> <span style="font-weight:bold">func</span> hitTest(<span style="font-weight:bold">_</span> point: CGPoint, with event: UIEvent?) -&gt; UIView? {
+        <span style="font-weight:bold">let</span> followButtonRect = followButton.convert(followButton.bounds, to: <span style="font-weight:bold">self</span>)
+        <span style="font-weight:bold">let</span> extendedRect = followButtonRect.insetBy(dx: -20, dy: -20)
+        <span style="font-weight:bold">if</span> followButton.isHidden == <span style="font-weight:bold">false</span> &amp;&amp; extendedRect.contains(point) {
+            <span style="font-weight:bold">return</span> followButton
+        }
+        <span style="font-weight:bold">return</span> <span style="font-weight:bold">super</span>.hitTest(point, with: event)
+    }
+</code></pre></div><p>入参是两个：用户点击的位置Point和触发的手势event。返回值是UIView。首先去获取当前控件的大小，通过<code>convert</code>方法转换成<code>CGRect</code>类型。接下来可以通过insetBy方法扩大点击区域，负数代表着向外延伸。如果扩展后的区域中包含这个Point，就将整个view认定为可以触发事件的view。否则就进行回溯。</p>
+<h3 id="注意事项">注意事项</h3>
+<p>hittest虽然好用，但是要注意，虽然hittest可以忽略掉被hidden的view，但是在我们上述的写法下，实际上还是根据point的位置进行判断。因此在做diff的时候，注意加上是否为hidden的判断条件。</p>
+<h2 id="更好的方法">更好的方法？</h2>
+<p>实际考虑一下，事实上我们在很多场景下都需要进行点击区域的调整。这也是抽象出一个黑箱的方法。理想情况下，或许我们可以直接在继承的底层的View中去扩展一个这样的方法，使用一个extension来实现。这样继承自这个类的子类都拥有这个方法。直接传入原始的view和想要扩大的程度（比如x、y方向的CGFloat值），就可以实现扩大点击区域的方法。</p>
+        </div>
+
+        <div class="row middle-xs">
+          <div class="col-xs-12">
+            
+          </div>
+        </div>
+        
+          <div class="row">
+            <div class="col-xs-12">
+              
+            </div>
+          </div>
+
+          
+
+
+
+          
+          
+          <div style="height: 50px;"></div>
+          
+          <div class="post-comments">
+            <div id="disqus_thread"></div>
+<script>
+  window.addEventListener("load", () => {
+    (function() {
+      
+      var d = document,
+        s = d.createElement("script");
+      s.src = "https://joway.disqus.com/embed.js";
+      s.setAttribute("data-timestamp", +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  });
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
+          </div>
+          
+        
 
         <div class="site-footer">
   
@@ -121,6 +217,8 @@
     
   
 </script>
+
+  
 
 </body>
 
