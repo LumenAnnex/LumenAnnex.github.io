@@ -6,7 +6,21 @@
     <description>Recent content in Posts on Lumen&#39;s Annex</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 16 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>iOS ｜ FBAllocationTracker源码阅读</title>
+      <link>http://example.org/posts/ios-fballocationtracker%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</link>
+      <pubDate>Mon, 18 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/posts/ios-fballocationtracker%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</guid>
+      <description>FBAllocationTracker FBAllocationTracker 是一个监控组件，作用有两个：
+ 追踪对象。使用 FBAllocationTracker 可以得到当前正在活跃的对象类的实例的个数、类名、初始化次数、销毁次数和实例所占的内存大小。 统计 alloc 和 dealloc 的次数。  文件结构 FBAllocationTracker代码不多，整体对外暴露的是两个文件：
+ FBAllocationTrackerManager。这是统一的 manager，内部使用 FBAllocationTracker 来进行真正的操作。这部分的实现在 FBAllocationTrackerImpl 内部。 FBAllocationTrackerSummary。这是用于存储结果的对象，通过该类来传递监控的结果。  另外一大块文件是Generations，这也算是FBAllocationTracker的一个特性。可以对所有创建的类进行分代。举个具体的例子，复现了一套用户的操作路径之后，可以手动分一代，这样所有该操作路径里的记录就被划分为同一代，避免和其他的操作冲突。
+其余的文件为工具类：
+ FBAllocationTrackerFunctors。包含一些运算符的重载，获取到每个类的实例个数一定需要对每个类或者是实例进行比较，这里包含了一些方便的运算符重载。  struct ClassEqualFunctor { bool operator()(const Class left, const Class right) const { return left == right; } };  FBAllocationTrackerHelpers。内部定义了两个方法，incrementAllocations 和 incrementDeallocations。用来对 alloc 和 dealloc 进行计数。 NSObject+FBAllocationTracker。这里对 NSObject 的 alloc 和 dealloc 进行 swizzle。  使用 接口基本定义在 FBAllocationTrackerManager 中，使用很简单
+[[FBAllocationTrackerManager sharedManager] startTrackingAllocations]; 如果要使用分代的功能，那么就在调用一个 enableGenerations 的方法即可。</description>
+    </item>
+    
     <item>
       <title>Travel | 到贵阳</title>
       <link>http://example.org/posts/%E5%88%B0%E8%B4%B5%E9%98%B3/</link>
